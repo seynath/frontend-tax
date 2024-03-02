@@ -1,5 +1,4 @@
-import React from 'react'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
@@ -7,47 +6,33 @@ import Header from './Header'
 import API_BASE_URL from '../config'
 
 function Login() {
+  // Initialize state for email and password using the useState hook
   const[value,setValue] = useState({
     email:'',
     password:''
   })
   const navigate = useNavigate()
+
+  // Set axios to include credentials in requests
   axios.defaults.withCredentials = true
 
-  // const loginForm = (e) => {
-  //   e.preventDefault()
-  //   console.log('form submitted')
-  //   axios.post('http://localhost:8000/login',value)
-  //     .then(response => {
-  //       console.log(response)
-  //       if(response.status === 200){
-  //         navigate('/')
-  //       }
-  //       else{
-  //         alert('Error')
-  //       }
-  //     })
-  //     .catch(error => {
-  //       console.log(error)
-  //     } )
-  // }
-
+  // Define the loginForm function to handle form submission
   const loginForm = (e) => {
     e.preventDefault();
-  
-    // Client-side validation
+
+    // Client-side validation to check if email and password are filled in
     if (!value.email || !value.password) {
       alert('Please fill in all fields');
       return;
     }
-  
-    // Sanitize form data
+
+    // Sanitize form data by trimming whitespace from email
     const formData = {
       email: value.email.trim(), // Trim whitespace
       password: value.password,
     };
-  
-    // Server-side validation and authentication
+
+    // Server-side validation and authentication using axios.post
     axios.post(`${API_BASE_URL}/login`, formData)
       .then(response => {
         console.log(response);
@@ -62,36 +47,28 @@ function Login() {
         alert('An error occurred');
       });
   }
-  
 
+  // JSX for the Login component
   return (
     <div className='bg-slate-700'>
       <Header />
 
-      {/* <h1>Login</h1>
-      <form onSubmit={loginForm}>
-      
-        <div className=''>
-          <label>Email</label>
-          <input type='text' className='' onChange={e=> setValue({...value, email:e.target.value})} />
-        </div>
-        <div className='form-group'>
-          <label>Password</label>
-          <input type='password' className='form-control' onChange={e => setValue({...value, password:e.target.value})} />
-        </div>
-        <button type='submit' className='btn btn-primary'>Login</button>
-        <button  className='btn btn-success'><Link to="/register">Register</Link></button>
-      </form> */}
+      {/* Imported Header component */}
 
+      {/* Login form wrapped in a div for styling */}
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+        {/* Container for title */}
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-slate-300">
             Sign in to your account
           </h2>
         </div>
 
+        {/* Container for the form */}
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+          {/* Form wrapped in a form tag for submission handling */}
           <form className="space-y-6" onSubmit={loginForm} method="POST">
+            {/* Email input field */}
             <div>
               <label htmlFor="email" className="block text-sm font-medium leading-6 text-slate-300">
                 Email address
@@ -109,11 +86,13 @@ function Login() {
               </div>
             </div>
 
+            {/* Password input field */}
             <div>
               <div className="flex items-center justify-between">
                 <label htmlFor="password" className="block text-sm font-medium leading-6 text-slate-300">
                   Password
                 </label>
+                {/* Link to password recovery page */}
                 {/* <div className="text-sm">
                   <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
                     Forgot password?
@@ -133,6 +112,7 @@ function Login() {
               </div>
             </div>
 
+            {/* Submit button for the form */}
             <div>
               <button
                 type="submit"
@@ -143,6 +123,7 @@ function Login() {
             </div>
           </form>
 
+          {/* Link to registration page */}
           <p className="mt-10 text-center text-sm text-gray-500">
             Not a member?{' '}
             <span className="font-semibold leading-6 text-slate-300 hover:text-indigo-500"><Link to="/register">Sign Up</Link></span>
@@ -151,7 +132,6 @@ function Login() {
         </div>
       </div>
     </div>
-
   )
 }
 
